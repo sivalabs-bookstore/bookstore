@@ -17,6 +17,8 @@ Some backing-services could be only event processors where they consume events f
 The web applications bookstore-webapp, bookstore-backoffice could be implemented using SPA frameworks like Angular, VueJS, ReactJS etc 
 or using server-side rendering technologies like Thymeleaf.
 
+![SivaLabs BookStore](images/sivalabs-bookstore.png "SivaLabs BookStore")
+
 ### Backend Services
 
 #### 1. catalog-service
