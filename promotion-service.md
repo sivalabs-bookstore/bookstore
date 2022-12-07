@@ -1,0 +1,4 @@
+# Promotion Service
+
+## API Endpoints
+
