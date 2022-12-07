@@ -19,6 +19,30 @@ or using server-side rendering technologies like Thymeleaf.
 
 ![SivaLabs BookStore](images/sivalabs-bookstore.png "SivaLabs BookStore")
 
+## Typical application flow
+A typical application usage flow looks like:
+* Customer browse through product catalog
+* Add preferred products to cart
+* Go to checkout page
+* Enter customer details, delivery address, payment details.
+* Place order
+  * Validate order details
+  * Validate Payment details
+  * If payment details is valid then set status to "NEW" otherwise to "ERROR"
+  * Save order details in DB
+  * Publish OrderCreated Event
+  * If payment details is invalid then Publish OrderError Event
+* Order Processing
+  * Notification-service receives OrderCreated Event and send an email notification to customer
+  * Notification-service receives OrderError Event and send an email notification to customer
+  * Delivery-service receives OrderCreated Event and update local status to SHIPPING and then publish OrderShipping Event
+  * Order-service receives OrderShipping Event and update status to SHIPPING
+  * Notification-service receives OrderShipping Event and send an email notification to customer
+  * Delivery-service DeliveryJob update local status to DELIVERED and then publish OrderDelivered Event
+  * Order-service receives OrderDelivered Event and update status to DELIVERED
+  * Notification-service receives OrderDelivered Event and send an email notification to customer
+* Customer receives order update emails with a link to view current order details.
+
 ### Backend Services
 
 #### 1. catalog-service
@@ -52,7 +76,7 @@ This service manages customer orders and exposes the following REST API endpoint
 * Get order by order_number
 
 Event Handlers:
-* ORDER_SHIPPING event handler: Update order status to SHIPPING_IN_PROGRESS
+* ORDER_SHIPPING event handler: Update order status to SHIPPING
 * ORDER_DELIVERED event handler: Update order status to DELIVERED
 * ORDER_ERROR event handler: Update order status to ERROR
 
@@ -63,20 +87,22 @@ This services exposes API to validate payment info (credit card number, cvv, exp
 
 For more info see [Payment Service Docs](payment-service.md)
 
-#### 5. shipping-service
-This service manages order shipping process.
+#### 5. delivery-service
+This service manages order delivery process.
 
 Event Handlers:
 * ORDER_CREATED event handler: Starts processing order shipment and publish ORDER_SHIPPING event
 
 Jobs:
-* OrderShipmentJob:
+* OrderDeliveryJob:
   * Process orders with status=SHIPPING, deliver the order and publish ORDER_DELIVERED event. 
   * In case of any failures publish ORDER_ERROR event.
 
-For more info see [Shipping Service Docs](shipping-service.md)
+For more info see [Delivery Service Docs](delivery-service.md)
 
 #### 6. notification-service
+This service send email notifications on various order events.
+
 Event Handlers:
 * ORDER_CREATED event handler: Send order received email notification
 * ORDER_SHIPPING event handler: Send order shipping started email notification
