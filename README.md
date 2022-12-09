@@ -6,9 +6,9 @@ The main goal of building this application is to learn various technologies by b
 
 ## Technical Architecture
 The key components of BookStore application are:
-* bookstore-webapp: This is the customer facing web application where they can browse through available books, add books to cart and place an order.
-* bookstore-backoffice: This is a backoffice web application used by administrators and staff to setup the books catalog and manage orders.
-* backing-services: These are domain-oriented backend services that fulfill the needs for bookstore-webapp and bookstore-backoffice.
+* **bookstore-webapp:** This is the customer facing web application where they can browse through available books, add books to cart and place an order.
+* **bookstore-backoffice:** This is a backoffice web application used by administrators and staff to setup the books catalog and manage orders.
+* **backing-services:** These are domain-oriented backend services that fulfill the needs for bookstore-webapp and bookstore-backoffice.
 
 We would like to build the backing-services as independently deployable microservices so that each service can be developed in the preferred language/framework.
 Most of these backing-services will expose REST APIs to be consumed by webapp, backoffice and also by other APIs. 
@@ -35,10 +35,8 @@ A typical application usage flow looks like:
 * Order Processing
   * Notification-service receives OrderCreated Event and send an email notification to customer
   * Notification-service receives OrderError Event and send an email notification to customer
-  * Delivery-service receives OrderCreated Event and update local status to SHIPPING and then publish OrderShipping Event
-  * Order-service receives OrderShipping Event and update status to SHIPPING
-  * Notification-service receives OrderShipping Event and send an email notification to customer
-  * Delivery-service DeliveryJob update local status to DELIVERED and then publish OrderDelivered Event
+  * Delivery-service receives OrderCreated Event and save order with status READY_TO_SHIP
+  * Delivery-service DeliveryJob update local status from READY_TO_SHIP to DELIVERED and then publish OrderDelivered Event
   * Order-service receives OrderDelivered Event and update status to DELIVERED
   * Notification-service receives OrderDelivered Event and send an email notification to customer
 * Customer receives order update emails with a link to view current order details.
@@ -68,7 +66,22 @@ This service manages promotions(discounts) for books and exposes the following R
 
 For more info see [Promotion Service Docs](promotion-service.md)
 
-#### 3. order-service
+#### 3. payment-service
+This services exposes API to validate payment info (credit card number, cvv, expiry month/year)
+
+For more info see [Payment Service Docs](payment-service.md)
+
+#### 4. cart-service
+This service manages customer carts and exposes the following REST API endpoints:
+* Create a new cart. 
+* Add item to cart
+* Update quantity of an item in a cart
+* Remove item from a cart
+* Delete a cart
+
+For more info see [Cart Service Docs](cart-service.md)
+
+#### 5. order-service
 This service manages customer orders and exposes the following REST API endpoints:
 * Create an order. After successfully saving order info publish ORDER_CREATED event.
 * Cancel order. After cancelling order publish ORDER_CANCELLED event.
@@ -76,44 +89,37 @@ This service manages customer orders and exposes the following REST API endpoint
 * Get order by order_number
 
 Event Handlers:
-* ORDER_SHIPPING event handler: Update order status to SHIPPING
 * ORDER_DELIVERED event handler: Update order status to DELIVERED
+* ORDER_CANCELLED event handler: Update order status to CANCELLED
 * ORDER_ERROR event handler: Update order status to ERROR
 
 For more info see [Order Service Docs](order-service.md)
 
-#### 4. payment-service
-This services exposes API to validate payment info (credit card number, cvv, expiry month/year)
-
-For more info see [Payment Service Docs](payment-service.md)
-
-#### 5. delivery-service
+#### 6. delivery-service
 This service manages order delivery process.
 
 Event Handlers:
-* ORDER_CREATED event handler: Starts processing order shipment and publish ORDER_SHIPPING event
+* ORDER_CREATED event handler: save order with status READY_TO_SHIP
 
 Jobs:
 * OrderDeliveryJob:
-  * Process orders with status=SHIPPING, deliver the order and publish ORDER_DELIVERED event. 
+  * Process orders with status=READY_TO_SHIP, deliver the order and publish ORDER_DELIVERED event. 
   * In case of any failures publish ORDER_ERROR event.
 
 For more info see [Delivery Service Docs](delivery-service.md)
 
-#### 6. notification-service
+#### 7. notification-service
 This service send email notifications on various order events.
 
 Event Handlers:
 * ORDER_CREATED event handler: Send order received email notification
-* ORDER_SHIPPING event handler: Send order shipping started email notification
+* ORDER_CANCELLED event handler: Send order cancelled email notification
 * ORDER_DELIVERED event handler: Send order delivered email notification
 * ORDER_ERROR event handler: Send order can't be fulfilled email notification
 
 For more info see [Notification Service Docs](notification-service.md)
 
-#### 7. API Gateway
-Instead of exposing individual APIs directly, the API Gateway will serve as a facade to all the REST APIs.
-
 ## How to contribute?
 * Run the application and let us know if you face any issue
+* Review the code and add your review comments
 * Contribute implementation of a service in your favourite language/framework
