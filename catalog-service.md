@@ -16,9 +16,9 @@ The catalog-service manages the books catalog and exposes the following REST API
        "currentPage": 1,
        "data": [
           {
-              "id": 1,
-              "isbn": "ABCDEFGH",
-              "title": "Book Title",
+              "id": "uuid",
+              "code": "ABCDEFGH",
+              "name": "Book Title",
               "description": "book description",
               "image_url": "https://images.com/1.png",
               "price": 24.50,
@@ -28,17 +28,17 @@ The catalog-service manages the books catalog and exposes the following REST API
        ]
     }
     ```
-### 2. Get book by ISBN
-* Endpoint : GET /api/products/{isbn}
+### 2. Get book by code(ISBN)
+* Endpoint : GET /api/products/{code}
 * Security: N/A
 * Success Response:
     * Status Code: 200
     * Body:
     ```json
     {
-      "id": 1,
-      "isbn": "ABCDEFGH",
-      "title": "Book Title",
+      "id": "uuid",
+      "code": "ABCDEFGH",
+      "name": "Book Title",
       "description": "book description",
       "image_url": "https://images.com/1.png",
       "price": 24.50,
@@ -51,7 +51,7 @@ The catalog-service manages the books catalog and exposes the following REST API
     * Body:
     ```json
       {
-          "message": "Book with ISBN <ISBN> not found"
+          "message": "Product with code <ISBN> not found"
       } 
     ```
 ### 3. Search books by title or description
@@ -67,9 +67,9 @@ The catalog-service manages the books catalog and exposes the following REST API
          "currentPage": 1,
          "data": [
             {
-                "id": 1,
-                "isbn": "ABCDEFGH",
-                "title": "Book Title",
+                "id": "uuid",
+                "code": "ABCDEFGH",
+                "name": "Book Title",
                 "description": "book description",
                 "image_url": "https://images.com/1.png",
                 "price": 24.50,
@@ -86,8 +86,8 @@ The catalog-service manages the books catalog and exposes the following REST API
 * Request Body:
     ```json
     {
-      "isbn": "ABCDEFGH", // unique
-      "title": "Book Title", // mandatory
+      "code": "ABCDEFGH", // unique
+      "name": "Book Title", // mandatory
       "description": "book description", // optional
       "image_url": "https://images.com/1.png",// optional
       "price": 24.50 // mandatory
@@ -98,8 +98,9 @@ The catalog-service manages the books catalog and exposes the following REST API
     * Body:
     ```json
     {
-      "isbn": "ABCDEFGH",
-      "title": "Book Title",
+      "id": "uuid",
+      "code": "ABCDEFGH",
+      "name": "Book Title",
       "description": "book description",
       "image_url": "https://images.com/1.png",
       "price": 24.50
@@ -111,16 +112,16 @@ The catalog-service manages the books catalog and exposes the following REST API
     * Body:
     ```json
       {
-          "message": "Book with ISBN already exist"
+          "message": "Product with ISBN already exist"
       } 
     ```
 ### 5. Update existing book
-* Endpoint : PUT /api/products/{isbn}
+* Endpoint : PUT /api/products/{code}
 * Security: Header `Authorization: Bearer <JWT_TOKEN>` with Role ADMIN or STAFF
 * Request Body:
     ```json
     {
-      "title": "Book Title", // mandatory
+      "name": "Book Title", // mandatory
       "description": "book description", // optional
       "image_url": "https://images.com/1.png", // optional
       "price": 24.50 // mandatory
@@ -131,8 +132,9 @@ The catalog-service manages the books catalog and exposes the following REST API
     * Body:
     ```json
     {
-      "isbn": "ISBN",
-      "title": "Book Title",
+      "id": "uuid",
+      "code": "ISBN",
+      "name": "Book Title",
       "description": "book description",
       "image_url": "https://images.com/1.png",
       "price": 24.50
@@ -144,11 +146,11 @@ The catalog-service manages the books catalog and exposes the following REST API
     * Body:
     ```json
       {
-          "message": "Book with ISBN not exist"
+          "message": "Product with ISBN not exist"
       } 
     ```
 ### 6. Delete a book
-* Endpoint : DELETE /api/products/{isbn}
+* Endpoint : DELETE /api/products/{code}
 * Security: Header `Authorization: Bearer <JWT_TOKEN>` with Role ADMIN or STAFF
 * Success Response:
     * Status Code: 200
@@ -158,6 +160,6 @@ The catalog-service manages the books catalog and exposes the following REST API
     * Body:
     ```json
       {
-          "message": "Book with ISBN not exist"
+          "message": "Product with ISBN not exist"
       } 
     ```

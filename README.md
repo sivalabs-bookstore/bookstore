@@ -46,7 +46,7 @@ A typical application usage flow looks like:
 #### 1. catalog-service
 This service manages the books catalog and exposes the following REST API endpoints:
 * Get books by page
-* Get book by ISBN
+* Get book by code(ISBN)
 * Create new Book
 * Update existing book
 * Delete a book
@@ -58,8 +58,8 @@ For more info see [Catalog Service Docs](catalog-service.md)
 
 #### 2. promotion-service
 This service manages promotions(discounts) for books and exposes the following REST API endpoints:
-* Get promotions for a given set of ISBNs
-* Get promotion for a given ISBN
+* Get promotions for a given set of codes(ISBNs)
+* Get promotion for a given code(ISBN)
 * Create promotion for a given book
 * Update promotion for a given book
 * Delete promotion for a given book
