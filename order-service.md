@@ -11,14 +11,14 @@ The order-service manages customer orders and exposes the following REST API end
     {
       "items": [
           {
-              "isbn": "ABCDEFGH", // unique
-              "title": "Book Title", // mandatory
+              "productCode": "ABCDEFGH", // unique
+              "name": "Book Title", // mandatory
               "price": 24.50, // mandatory
               "quantity": 1
           },
           {
-              "isbn": "JKLMNOP", // unique
-              "title": "Book Title", // mandatory
+              "productCode": "JKLMNOP", // unique
+              "name": "Book Title", // mandatory
               "price": 20.50, // mandatory
               "quantity": 2
           }
@@ -53,14 +53,14 @@ The order-service manages customer orders and exposes the following REST API end
        "status": "NEW",
        "items": [
           {
-              "isbn": "ABCDEFGH",
-              "title": "Book Title",
+              "productCode": "ABCDEFGH",
+              "name": "Book Title",
               "price": 24.50,
               "quantity": 1
           },
           {
-              "isbn": "JKLMNOP",
-              "title": "Book Title",
+              "productCode": "JKLMNOP",
+              "name": "Book Title",
               "price": 20.50,
               "quantity": 2
           }
@@ -127,14 +127,14 @@ The order-service manages customer orders and exposes the following REST API end
                "status": "NEW",
                "items": [
                   {
-                      "isbn": "ABCDEFGH",
-                      "title": "Book Title",
+                      "productCode": "ABCDEFGH",
+                      "name": "Book Title",
                       "price": 24.50,
                       "quantity": 1
                   },
                   {
-                      "isbn": "JKLMNOP",
-                      "title": "Book Title",
+                      "productCode": "JKLMNOP",
+                      "name": "Book Title",
                       "price": 20.50,
                       "quantity": 2
                   }
@@ -168,14 +168,14 @@ The order-service manages customer orders and exposes the following REST API end
        "status": "NEW",
        "items": [
           {
-              "isbn": "ABCDEFGH",
-              "title": "Book Title",
+              "productCode": "ABCDEFGH",
+              "name": "Book Title",
               "price": 24.50,
               "quantity": 1
           },
           {
-              "isbn": "JKLMNOP",
-              "title": "Book Title",
+              "productCode": "JKLMNOP",
+              "name": "Book Title",
               "price": 20.50,
               "quantity": 2
           }

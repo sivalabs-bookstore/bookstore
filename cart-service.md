@@ -14,8 +14,8 @@ The cart-services exposes API to manage carts
           "id": "cart_id",
           "items": [
             {
-                "isbn": "ISBN_1",
-                "title": "title",
+                "productCode": "ISBN_1",
+                "name": "title",
                 "description": "description",
                 "price": 1.50,
                 "quantity": 1
@@ -33,7 +33,7 @@ If cartId is specified then it will return the cart info for given cartId, if ca
 * Request Body:
     ```json
         {
-            "isbn": "ISBN_1",
+            "productCode": "ISBN_1",
             "quantity": 1
         }
     ```
@@ -45,8 +45,8 @@ If cartId is specified then it will return the cart info for given cartId, if ca
           "id": "cart_id",
           "items": [
             {
-                "isbn": "ISBN_1",
-                "title": "title",
+                "productCode": "ISBN_1",
+                "name": "title",
                 "description": "description",
                 "price": 1.50,
                 "quantity": 1
@@ -61,7 +61,7 @@ If cartId is specified then it will return the cart info for given cartId, if ca
 * Request Body:
     ```json
         {
-            "isbn": "ISBN_1",
+            "productCode": "ISBN_1",
             "quantity": 1
         }
     ```
@@ -73,8 +73,8 @@ If cartId is specified then it will return the cart info for given cartId, if ca
           "id": "cart_id",
           "items": [
             {
-                "isbn": "ISBN_1",
-                "title": "title",
+                "productCode": "ISBN_1",
+                "name": "title",
                 "description": "description",
                 "price": 1.50,
                 "quantity": 1
@@ -83,7 +83,7 @@ If cartId is specified then it will return the cart info for given cartId, if ca
       }
       ```
 ### 4. Remove item in cart
-* Endpoint : DELETE /api/carts/items/{isbn}?cartId=CART_ID
+* Endpoint : DELETE /api/carts/items/{productCode}?cartId=CART_ID
 * Security: N/A
 * Response:
     * Status Code: 200
@@ -93,8 +93,8 @@ If cartId is specified then it will return the cart info for given cartId, if ca
           "id": "cart_id",
           "items": [
             {
-                "isbn": "ISBN_1",
-                "title": "title",
+                "productCode": "ISBN_1",
+                "name": "title",
                 "description": "description",
                 "price": 1.50,
                 "quantity": 1

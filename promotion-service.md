@@ -3,8 +3,8 @@ The promotion-service manages promotions(discounts) for books and exposes the fo
 
 ## API Endpoints
 
-### 1. Get promotions for a given set of ISBNs
-* Endpoint : GET /api/promotions?isbn=ISBN_1,ISBN_2,ISBN_3,ISBN_N
+### 1. Get promotions for a given set of productCodes(ISBNs)
+* Endpoint : GET /api/promotions?productCodes=ISBN_1,ISBN_2,ISBN_3,ISBN_N
 * Security: N/A
 * Response:
     * Status Code: 200
@@ -12,24 +12,24 @@ The promotion-service manages promotions(discounts) for books and exposes the fo
       ```json
       [
             {
-                "isbn": "ISBN_1",
+                "productCode": "ISBN_1",
                 "discount": 1.50
             },
             {
-                "isbn": "ISBN_3",
+                "productCode": "ISBN_3",
                 "discount": 3.50
             }
       ]
       ```
-### 2. Get promotion for a given ISBN
-* Endpoint : GET /api/promotions/{isbn}
+### 2. Get promotion for a given productCode(ISBN)
+* Endpoint : GET /api/promotions/{productCode}
 * Security: N/A
 * Success Response:
     * Status Code: 200
     * Body:
       ```json
       {
-         "isbn": "ISBN",
+         "productCode": "ISBN",
          "discount": 1.50 // 0 if no promotion exists for given ISBN
       }
       ```
@@ -39,7 +39,7 @@ The promotion-service manages promotions(discounts) for books and exposes the fo
   * Request Body:
     ```json
       {
-        "isbn": "ABCDEFGH", // mandatory
+        "productCode": "ABCDEFGH", // mandatory
         "discount": 24.50 // mandatory
       }
       ```
@@ -48,7 +48,7 @@ The promotion-service manages promotions(discounts) for books and exposes the fo
     * Body:
     ```json
     {
-      "isbn": "ABCDEFGH",
+      "productCode": "ABCDEFGH",
       "discount": 24.50
     }
     ```
@@ -62,7 +62,7 @@ The promotion-service manages promotions(discounts) for books and exposes the fo
       } 
     ```
 ### 4. Delete promotion for a given book
-* Endpoint : DELETE /api/promotions/{isbn}
+* Endpoint : DELETE /api/promotions/{productCode}
 * Security: Header `Authorization: Bearer <JWT_TOKEN>` with Role ADMIN or STAFF
 * Success Response:
     * Status Code: 200
