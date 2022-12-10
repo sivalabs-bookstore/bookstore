@@ -45,39 +45,12 @@ The order-service manages customer orders and exposes the following REST API end
     }
     ```
 * Success Response:
-    * Status Code: 201
+    * Status Code: 202
     * Body:
     ```json
     {
        "orderId":"abcd-efgh-ijkl-mnop",
-       "status": "NEW",
-       "items": [
-          {
-              "productCode": "ABCDEFGH",
-              "name": "Book Title",
-              "price": 24.50,
-              "quantity": 1
-          },
-          {
-              "productCode": "JKLMNOP",
-              "name": "Book Title",
-              "price": 20.50,
-              "quantity": 2
-          }
-      ],
-      "customer": {
-        "name":"customer name",
-        "email": "customer@email.com",
-        "phone": "999999999"
-      },
-      "deliveryAddress": {
-          "addressLine1": "street",
-          "addressLine2": "area",
-          "city": "city",
-          "state": "state",
-          "zipCode": "zipcode",
-          "country": "Country"
-      }
+       "status": "NEW"
     }
     ```
 * Error Response - Bad Request
