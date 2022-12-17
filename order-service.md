@@ -3,7 +3,113 @@ The order-service manages customer orders and exposes the following REST API end
 
 ## API Endpoints
 
-### 1. Create an order
+
+### 1. Get cart for a given cartId
+* Endpoint : GET /api/carts<?cartId=CART_ID>
+* Security: N/A
+* Response:
+    * Status Code: 200
+    * Body:
+      ```json
+      {
+          "id": "cart_id",
+          "items": [
+            {
+                "code": "ISBN_1",
+                "name": "product name",
+                "description": "description",
+                "price": 1.50,
+                "quantity": 1
+            }
+          ]
+      }
+      ```
+
+Here cartId query parameter is optional. If not included this request will create a new cart.
+If cartId is specified then it will return the cart info for given cartId, if cartId not found then returns 404.
+
+### 2. Add item to cart
+* Endpoint : POST /api/carts<?cartId=CART_ID>
+* Security: N/A
+* Request Body:
+    ```json
+        {
+            "code": "ISBN_1",
+            "quantity": 1 //optional, default to 1
+        }
+    ```
+* Response:
+    * Status Code: 200
+    * Body:
+      ```json
+      {
+          "id": "cart_id",
+          "items": [
+            {
+                "code": "ISBN_1",
+                "name": "product name",
+                "description": "description",
+                "price": 12.50,
+                "quantity": 1
+            }
+          ]
+      }
+      ```
+
+### 3. Update item quantity in cart
+* Endpoint : PUT /api/carts?cartId=CART_ID
+* Security: N/A
+* Request Body:
+    ```json
+        {
+            "code": "ISBN_1",
+            "quantity": 1
+        }
+    ```
+* Response:
+    * Status Code: 200
+    * Body:
+      ```json
+      {
+          "id": "cart_id",
+          "items": [
+            {
+                "code": "ISBN_1",
+                "name": "product name",
+                "description": "description",
+                "price": 12.50,
+                "quantity": 1
+            }
+          ]
+      }
+      ```
+### 4. Remove item in cart
+* Endpoint : DELETE /api/carts/items/{code}?cartId=CART_ID
+* Security: N/A
+* Response:
+    * Status Code: 200
+    * Body:
+      ```json
+      {
+          "id": "cart_id",
+          "items": [
+            {
+                "code": "ISBN_1",
+                "name": "product name",
+                "description": "description",
+                "price": 1.50,
+                "quantity": 1
+            }
+          ]
+      }
+      ```
+### 5. Delete cart
+* Endpoint : DELETE /api/carts?cartId=CART_ID
+* Security: N/A
+* Response:
+    * Status Code: 200
+
+### 6. Create an order
 * Endpoint : POST /api/orders
 * Security: N/A
 * Request Body:
@@ -11,13 +117,13 @@ The order-service manages customer orders and exposes the following REST API end
     {
       "items": [
           {
-              "productCode": "ABCDEFGH", // unique
+              "code": "ABCDEFGH", // unique
               "name": "Book Title", // mandatory
               "price": 24.50, // mandatory
               "quantity": 1
           },
           {
-              "productCode": "JKLMNOP", // unique
+              "code": "JKLMNOP", // unique
               "name": "Book Title", // mandatory
               "price": 20.50, // mandatory
               "quantity": 2
@@ -62,7 +168,7 @@ The order-service manages customer orders and exposes the following REST API end
           "message": "Payment rejected"
       } 
     ```
-### 2. Cancel order
+### 7. Cancel order
 * Endpoint : DELETE /api/orders/{orderId}
 * Security: Header `Authorization: Bearer <JWT_TOKEN>` with Role ADMIN or STAFF
 * Success Response:
@@ -83,7 +189,7 @@ The order-service manages customer orders and exposes the following REST API end
           "message": "orderId not exists"
       } 
     ```
-### 3. Get all orders
+### 8. Get all orders
 * Endpoint : GET /api/orders
 * Security: Header `Authorization: Bearer <JWT_TOKEN>` with Role ADMIN or STAFF
 * Success Response:
@@ -100,13 +206,13 @@ The order-service manages customer orders and exposes the following REST API end
                "status": "NEW",
                "items": [
                   {
-                      "productCode": "ABCDEFGH",
+                      "code": "ABCDEFGH",
                       "name": "Book Title",
                       "price": 24.50,
                       "quantity": 1
                   },
                   {
-                      "productCode": "JKLMNOP",
+                      "code": "JKLMNOP",
                       "name": "Book Title",
                       "price": 20.50,
                       "quantity": 2
@@ -129,7 +235,7 @@ The order-service manages customer orders and exposes the following REST API end
         ]
     }
     ```
-### 4. Get order by order_id
+### 9. Get order by order_id
 * Endpoint : GET /api/orders/{orderId}
 * Security: N/A
 * Success Response:
@@ -141,13 +247,13 @@ The order-service manages customer orders and exposes the following REST API end
        "status": "NEW",
        "items": [
           {
-              "productCode": "ABCDEFGH",
+              "code": "ABCDEFGH",
               "name": "Book Title",
               "price": 24.50,
               "quantity": 1
           },
           {
-              "productCode": "JKLMNOP",
+              "code": "JKLMNOP",
               "name": "Book Title",
               "price": 20.50,
               "quantity": 2
@@ -176,15 +282,29 @@ The order-service manages customer orders and exposes the following REST API end
         "message": "Order with id <order_id> not found"
     } 
      ```
-## Events
-1. ORDER_SHIPPING event handler: 
-    * Update order status to "SHIPPING"
+## Order Event Processing Handlers:
 
-2. ORDER_DELIVERED event handler: 
+1. ORDER_DELIVERED event handler: 
     * Update order status to "DELIVERED"
 
-3. ORDER_ERROR event handler: 
+2. ORDER_ERROR event handler: 
     * Update order status to "ERROR"
+
+3. ORDER_CANCELLED event handler:
+    * Update order status to "CANCELLED"
+
+## Order Event Notification Handlers:
+1. ORDER_CREATED event handler:
+    * Send order received email notification
+
+2. ORDER_CANCELLED event handler:
+    * Send order cancellation email notification
+
+3. ORDER_DELIVERED event handler:
+    * Send order delivered email notification
+
+4. ORDER_ERROR event handler:
+    * Send order can't be fulfilled email notification
 
 ## Jobs
 1. Order Processing Job

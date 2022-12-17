@@ -91,6 +91,7 @@ The catalog-service manages the books catalog and exposes the following REST API
       "description": "book description", // optional
       "image_url": "https://images.com/1.png",// optional
       "price": 24.50 // mandatory
+      "discount": 2.50 // optional
     }
     ```
 * Success Response:
@@ -103,7 +104,9 @@ The catalog-service manages the books catalog and exposes the following REST API
       "name": "Book Title",
       "description": "book description",
       "image_url": "https://images.com/1.png",
-      "price": 24.50
+      "price": 24.50,
+      "discount": 2.50,
+      "salePrice": 22.0
     }
     ```
 * Error Response - Bad Request
@@ -124,7 +127,8 @@ The catalog-service manages the books catalog and exposes the following REST API
       "name": "Book Title", // mandatory
       "description": "book description", // optional
       "image_url": "https://images.com/1.png", // optional
-      "price": 24.50 // mandatory
+      "price": 24.50, // mandatory
+      "discount": 2.50
     }
     ```
 * Success Response:
@@ -137,7 +141,9 @@ The catalog-service manages the books catalog and exposes the following REST API
       "name": "Book Title",
       "description": "book description",
       "image_url": "https://images.com/1.png",
-      "price": 24.50
+      "price": 24.50,
+      "discount": 2.50,
+      "salePrice": 22.0
     }
     ```
 * Error Response - Bad Request
