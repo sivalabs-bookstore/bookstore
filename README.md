@@ -101,6 +101,36 @@ Jobs:
 
 For more info see [Delivery Service Docs](delivery-service.md)
 
+Error Response Type:
+
+In Spring Boot 3, the ProblemDetails is a standard response used to provide a consistent format for error responses in RESTful APIs. The ProblemDetails response is defined by the RFC 7807 standard, which specifies a JSON format for error responses.
+
+The ProblemDetails response typically includes the following fields:
+
+ - **type**: a URI that identifies the problem type. This can be used by clients to handle specific types of errors.
+ - **title**: a short, human-readable summary of the problem.
+ - **status**: the HTTP status code of the response.
+ - **detail**: a human-readable explanation of the problem.
+ - **instance**: a URI that identifies the specific occurrence of the problem.
+ - **properties** : Custom properties what you would like to add.
+
+Sample Response :
+
+```json
+{
+    "type": "https://api.bookmarks.com/errors/not-found",
+    "title": "Bookmark Not Found",
+    "status": 404,
+    "detail": "Bookmark with id: 111 not found",
+    "instance": "/api/bookmarks/111",
+    "errorCategory": "Generic",
+    "timestamp": "2022-11-30T05:21:59.828411Z"
+}
+```
+
+For More Details refer [this](https://www.sivalabs.in/spring-boot-3-error-reporting-using-problem-details/) blog post
+
+
 ## How to contribute?
 * Run the application and let us know if you face any issue
 * Review the code and add your review comments
